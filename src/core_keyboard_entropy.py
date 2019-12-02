@@ -4,7 +4,6 @@ import os
 import sys
 import time
 from pynput import keyboard
-import socket
 
 print("\n---------- START module core keyboard entropy ----------\n\n")
 
@@ -21,6 +20,18 @@ def abort():
     print ("Суммарно было нажато клавиш: ",i[0])
     print("\n\n---------- END module core keyboard entropy ----------\n")
     time.sleep(3)
+
+    import socket
+
+    str_entropy = str(elapsed)
+
+    # socket server
+
+    sock = socket.socket()
+    sock.connect(('localhost', 6662))
+    sock.send(str_entropy.encode())
+    sock.close()
+
     exit(0)
     
 
@@ -31,7 +42,7 @@ def on_press(key):
         i[0] = i[0] + 1
         if i[0] == 5:
             abort()
-            keyboard.send('ctrl+c')
+            #keyboard.send('ctrl+c')
             
 
     except AttributeError:
