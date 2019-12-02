@@ -8,6 +8,10 @@ install:
 ifdef INSTALL_PACKAGES
 	sudo apt-get install python3-pip
 	pip3 install virtualenv
+
+	sudo apt-get install tesseract-ocr
+	wget https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata # check the need for this
+	mv eng.traineddata /usr/share/tesseract-ocr/4.00/tessdata/eng.traineddata 
 endif
 
 ifdef INSTALL_ENV
@@ -22,7 +26,7 @@ end:
 	deactivate
 
 clean:
-	rm -r ./env
+	rm -rf ./env/ ./.vscode/
 
 info:
 	pip freeze

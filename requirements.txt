@@ -1,1 +1,2 @@
 PassportEye==1.4.1
+tesseract==0.1.3
