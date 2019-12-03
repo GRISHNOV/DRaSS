@@ -3,57 +3,82 @@
 import hashlib
 import binascii
 import time
+import pyAesCrypt # Если проблемы с импортированием (или отдельными функциями внутри модуля), то попробуй с sudo
+import io
 
 
+def get_sha256( data:str ) -> str: # Многоитерационный SHA256
 
-print("\n---------- START module crypto ----------\n\n")
+    ITERATION_NUMBER = 10**6 # Длина цепочки хэшей. Миллион итераций обеспечивают должную задержку
+    
+    hash = hashlib.sha256(data.encode()).hexdigest()
+    counter = 1
+    
+    while (counter < ITERATION_NUMBER):
+        hash = hashlib.sha256(hash.encode()).hexdigest()
+        counter = counter + 1
 
-begin = [0]
-begin[0] = time.time()
-
-hash = hashlib.sha256(b'test').hexdigest()
-hash_iteration = 1
-iteration_constant = 10**6
-
-while (hash_iteration < iteration_constant):
-    hash = hashlib.sha256(hash.encode()).hexdigest()
-    hash_iteration = hash_iteration + 1
-
-print(hash)
-end = time.time()
-elapsed = end - begin[0]
-print(elapsed)
-
-input()
-
-hash_crc = binascii.crc32(hash.encode())
-print(hash_crc)
-
-import pyAesCrypt
-
-def crypt(dir):
-    print('-----------------------------------')
-    password = input('Enter key: ') 
-    bufferSize = 512*1024 
-    pyAesCrypt.encryptFile(str(dir),str(dir)+'.aes',password, bufferSize) 
-    print('[Crypted] '+str(dir)+'.aes')
-
-dir = input('Enter file name: ')
-crypt(dir)
-
-input()
-password = input('Enter key: ') 
-bufferSize = 512*1024
-pyAesCrypt.decryptFile("test.txt.aes","data.txt",password,bufferSize) 
-
-msg = "test"
-gamma = "1234"
-result = bytes([i^j for i,j in zip(msg.encode(),gamma.encode())]).decode()
-print(result)
-decrypt = bytes([i^j for i,j in zip(result.encode(),gamma.encode())]).decode()
-print(decrypt)
+    return hash
 
 
+def get_crc32 ( data:str ) -> str: # Контрольная сумма CRC32
+
+    checksum = binascii.crc32(data.encode())
+    
+    return checksum
 
 
-print("\n\n---------- END module crypto ----------\n")
+def get_XOR_cipher ( data:str, gamma:str ) -> str: # Потоковый шифр гаммирования для одинаковых по длине строк
+
+    result = bytes([i^j for i,j in zip(data.encode(),gamma.encode())]).decode() # gamma является значением ключа
+
+    return result
+
+
+def get_AES256_encrypt( data:str , password:str ) -> bytes: # Шифрование AES256 
+
+    BUFFER_SIZE = 64 * 1024 # Размер буфера
+
+    # Битовый набор данных для шифрования (открытый текст)
+    pbdata = data.encode() + b" \x00\x01"
+    print(pbdata)
+
+    # Входной битовый поток для открытого текста
+    fIn = io.BytesIO(pbdata)
+
+    # Инициализация битового потока для шифротекста
+    fCiph = io.BytesIO()
+
+    # Поток шифрования
+    pyAesCrypt.encryptStream(fIn, fCiph, password, BUFFER_SIZE)
+
+    return fCiph.getvalue()
+
+
+def get_AES256_decrypt( data:str , password:str ) -> str: # Расшифрование AES256
+
+    BUFFER_SIZE = 64 * 1024 # Размер буфера
+
+    # Инициализация битового потока для шифротекста
+    fCiph = io.BytesIO(data)
+
+    # Инициализация битового потока для расшированного текста
+    fDec = io.BytesIO()
+
+    # Длина шифротекста
+    ctlen = len(fCiph.getvalue())
+
+    # Поток расшифрования
+    pyAesCrypt.decryptStream(fCiph, fDec, password, BUFFER_SIZE, ctlen)
+
+    # Печать расшифрованных данных
+    #print("Decrypted data:\n" + str(fDec.getvalue()))
+    
+    return str(fDec.getvalue())
+
+
+if __name__ == "__main__":
+
+    print("\n---------- START module crypto ----------\n\n")
+    pass
+    print("\n\n---------- END module crypto ----------\n")
