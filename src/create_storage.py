@@ -3,8 +3,10 @@
 import os
 import sqlite3
 
+import crypto # Модуль crypto.py
+
 if __name__ == "__main__":
-    
+
     print("\n---------- START module storage creator master ----------\n\n")
 
     print("Сейчас Вам будет предложено создать личное хранилище.")
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     #cursor.execute('SELECT * FROM key_data ')
     #rows = cursor.fetchall()
     #for row in rows:
-    #    print(row)
+    #print(row)
 
     connection.commit()
     connection.close()
