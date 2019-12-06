@@ -4,7 +4,7 @@ import os
 import sqlite3
 import socket
 
-import crypto # github.com/marcobellaccini/pyAesCrypt -> setup.py install
+import crypto # github.com/marcobellaccini/pyAesCrypt -> download repository and run setup.py install
 
 
 if __name__ == "__main__":

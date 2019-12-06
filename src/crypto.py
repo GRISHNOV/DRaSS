@@ -3,7 +3,7 @@
 import hashlib
 import binascii
 import time
-import pyAesCrypt # github.com/marcobellaccini/pyAesCrypt -> setup.py install
+import pyAesCrypt # github.com/marcobellaccini/pyAesCrypt -> download repository and run setup.py install
 import io
 
 
