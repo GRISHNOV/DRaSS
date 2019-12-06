@@ -4,15 +4,12 @@
 #### This open-source project was created as part of the course "Information Security" at MIPT (4th year)
 
 *Easy start:*
-- ```config flags-env.mk```
-    - INSTALL_PACKAGES - define installation packages in Linux
-        - var defined - with installation
-        - var not defined - without installation (default)
-    - INSTALL_ENV - define installation virtualenv python3 
-        - var defined - with installation (default)
-        - var not defined - without installation
-- ```make```
-- ```make start```
+```
+make install
+source ./env/bin/activate  # To exit from virtualenv user "deactivate"
+pip3 install -r requirements.txt
+make start
+```
 
 *Commands: (with ```make```)*
 - ```install```
