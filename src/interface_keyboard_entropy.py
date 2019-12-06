@@ -78,5 +78,18 @@ if __name__ == "__main__":
 
     print("KEY:",key)
 
+    print("\nPress for push msg to server")
+    input()
+
+    data_for_server = ""
+    for i in key:
+        data_for_server += i
+
+    sock = socket.socket()
+    sock.connect(('localhost', 2020))
+    sock.send(data_for_server.encode())
+    sock.close()
+
+
     print("\n\n---------- END module intefrace keyboard entropy ----------\n")
 

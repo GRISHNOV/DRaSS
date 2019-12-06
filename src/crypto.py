@@ -3,22 +3,29 @@
 import hashlib
 import binascii
 import time
-import pyAesCrypt # Если проблемы с импортированием (или отдельными функциями внутри модуля), то попробуй с sudo
+import pyAesCrypt # github.com/marcobellaccini/pyAesCrypt -> setup.py install
 import io
 
 
-def get_sha256( data:str ) -> str: # Многоитерационный SHA256
+def get_sha256( data:str , once_iteration:bool ) -> str: # Многоитерационный SHA256
 
-    ITERATION_NUMBER = 10**6 # Длина цепочки хэшей. Миллион итераций обеспечивают должную задержку
-    
-    hash = hashlib.sha256(data.encode()).hexdigest()
-    counter = 1
-    
-    while (counter < ITERATION_NUMBER):
-        hash = hashlib.sha256(hash.encode()).hexdigest()
-        counter = counter + 1
+    if once_iteration: # Флаг запроса только одной итерации хеширования
 
-    return hash
+        hash = hashlib.sha256(data.encode()).hexdigest()
+        return hash
+
+    else:
+
+        ITERATION_NUMBER = 10**6 # Длина цепочки хэшей. Миллион итераций обеспечивают должную задержку
+        
+        hash = hashlib.sha256(data.encode()).hexdigest()
+        counter = 1
+        
+        while (counter < ITERATION_NUMBER):
+            hash = hashlib.sha256(hash.encode()).hexdigest()
+            counter = counter + 1
+
+        return hash
 
 
 def get_crc32 ( data:str ) -> str: # Контрольная сумма CRC32
