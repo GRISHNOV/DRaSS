@@ -6,6 +6,11 @@ from passporteye import read_mrz
 from collections import OrderedDict
 
 
+# TODO: fix readme
+# TODO: add pytest
+# FIXME: fix tests and their calling
+
+
 class Recognize:
 
     def __init__(self):
@@ -82,17 +87,18 @@ class Recognize:
              self._max_year_20th else '19') + day_number[:2]
 
 
-def test():
-    for file, test_file in [('./tests/data/passport-td3.jpg', assert_td3_jpg),
-                            ('./tests/data/passport-td3.png', assert_td3_png),
-                            ('./tests/data/passport-td2.jpg', assert_td2_jpg),
-                            ('./tests/data/passport-td2.png', assert_td2_png),
-                            ]:
-        for as_stream in [True, False]:
-            test_fn(read_img(fn, as_stream=as_stream))
+class TestFunction:
+    def test(self):
+        for file, test_file in [('./tests/data/passport-td3.jpg', assert_td3_jpg),
+                                ('./tests/data/passport-td3.png', assert_td3_png),
+                                ('./tests/data/passport-td2.jpg', assert_td2_jpg),
+                                ('./tests/data/passport-td2.png', assert_td2_png),
+                                ]:
+            for as_stream in [True, False]:
+                test_fn(read_img(fn, as_stream=as_stream))
 
 
-class TestAction(argparse.Action):
+class ArgTestAction(argparse.Action):
 
     def __init__(self,
                  option_strings,
@@ -122,7 +128,7 @@ def main():
     )
     parser.add_argument(
         '-t', '--test',
-        action=TestAction,
+        action=ArgTestAction,
         help='test this function and exit'
     )
     args = parser.parse_args(sys.argv[1:])
