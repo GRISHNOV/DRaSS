@@ -52,9 +52,8 @@ if __name__ == "__main__":
     
     while(True):
 
-        UK_input = input() # e3IaK
-        UK_gamma = crypto.get_sha256( UK_input, False)
-        UK_hash = crypto.get_sha256( UK_gamma , True )
+        UK_input = input() # pUoSi
+        UK_hash = crypto.get_sha256( crypto.get_sha256( UK_input, False) , True )
 
         if UK_hash == rows[0][1]:
             print("Совпадение")
@@ -96,14 +95,26 @@ if __name__ == "__main__":
 
     print("\nnew UK:", new_UK)
 
-    # UK_gamma = crypto.get_sha256( new_UK, False)
-    # new_UK_hash = crypto.get_sha256( UK_gamma , True )
-    # MK_encypted = crypto.get_XOR_cipher( MK, UK_gamma )
-    # MK_CRC = crypto.get_crc32(MK)
+    UK_gamma = crypto.get_sha256( new_UK, False)
+    new_UK_hash = crypto.get_sha256( UK_gamma , True )
+    MK = crypto.get_XOR_cipher( rows[0][2], crypto.get_sha256( UK_input, False ) )
+  
+    if str(crypto.get_crc32(MK)) == rows[0][3]:
+        print("MK CRC correct")
+    else:
+        print("MK CRC error")
+    #exit(0)
+    new_MK_encypted = crypto.get_XOR_cipher( MK, UK_gamma )
 
     # entities = (storage_name, new_UK_hash, MK_encypted, MK_CRC, 'storage_created_successfully')
     # cursor.execute('''INSERT INTO key_data(user_db_name, UK_hash, MK_encypted, MK_CRC, text_comment) VALUES(?, ?, ?, ?, ?)''', entities)
 
+    # cursor.execute('UPDATE key_data SET UK_hash=?', (new_UK_hash,))
+    # cursor.execute('UPDATE key_data SET MK_encypted=?', (new_MK_encypted,))
+
+    cursor.execute( 'UPDATE key_data SET UK_hash=?, MK_encypted=?', ( new_UK_hash, new_MK_encypted ) )
+
+    print("complete!")
 
     connection.commit()
     connection.close()
