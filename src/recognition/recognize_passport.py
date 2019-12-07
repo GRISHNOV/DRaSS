@@ -1,13 +1,13 @@
 import argparse
 import sys
 import io
+import pytest
 
 from passporteye import read_mrz
 from collections import OrderedDict
 
 
 # TODO: fix readme
-# FIXME: fix tests and their calling
 
 
 class Recognize:
@@ -86,8 +86,8 @@ class Recognize:
              self._max_year_20th else '19') + day_number[:2]
 
 
-
 class ArgTestAction(argparse.Action):
+    path_to_file_test = "./tests.py"
 
     def __init__(self,
                  option_strings,
@@ -102,7 +102,7 @@ class ArgTestAction(argparse.Action):
             help=help)
 
     def __call__(self, parser, namespace, values, option_string=None):
-        test()
+        pytest.main(["-v", self.path_to_file_test])
         parser.exit()
 
 

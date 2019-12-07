@@ -2,7 +2,11 @@ from recognize_passport import Recognize
 import pytest
 
 
-class TestFunction:
+def output_format(param):
+    return f"{param[0]}"
+
+
+class TestRecongnize:
     def setup(self):
         self.test_results = {
             'type':             ('PN',          'PN',           'PN',           'PN'),
@@ -23,11 +27,12 @@ class TestFunction:
     @pytest.mark.parametrize(
         "file_mas",
         [
-            ('./tests/passport_test1.jpg', 0),
-            ('./tests/passport_test2.jpg', 1),
-            ('./tests/passport_test3.jpg', 2),
-            # ('./tests/passport_test4.jpg', 3),
+            ('./tests/passport_test0.jpg', 0),
+            ('./tests/passport_test1.jpg', 1),
+            ('./tests/passport_test2.jpg', 2),
+            # ('./tests/passport_test3.jpg', 3),
         ],
+        ids=output_format
     )
     def test(self, file_mas):
         path_file, number_file = file_mas
