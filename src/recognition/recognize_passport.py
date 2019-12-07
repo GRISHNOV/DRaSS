@@ -7,7 +7,6 @@ from collections import OrderedDict
 
 
 # TODO: fix readme
-# TODO: add pytest
 # FIXME: fix tests and their calling
 
 
@@ -86,16 +85,6 @@ class Recognize:
             ('20' if int(day_number[:2]) <
              self._max_year_20th else '19') + day_number[:2]
 
-
-class TestFunction:
-    def test(self):
-        for file, test_file in [('./tests/data/passport-td3.jpg', assert_td3_jpg),
-                                ('./tests/data/passport-td3.png', assert_td3_png),
-                                ('./tests/data/passport-td2.jpg', assert_td2_jpg),
-                                ('./tests/data/passport-td2.png', assert_td2_png),
-                                ]:
-            for as_stream in [True, False]:
-                test_fn(read_img(fn, as_stream=as_stream))
 
 
 class ArgTestAction(argparse.Action):
