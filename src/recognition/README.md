@@ -1,5 +1,13 @@
-#### Function for recognition passports
+## Function for recognition passports
 
-This function can be called by execution program 
-- ```python3.7 recognize_passport.py [infile]```
-- call function ```recognize_data([path_to_the_input_file])```
+*Easy start:*
+- ```python3 recognize_passport.py [infile]``` - recognize passport data
+- ```python3 recognize_passport.py -h``` - show help
+- ```python3 recognize_passport.py -t``` - provide testing
+
+*Call function from python:*
+- ```
+  recongnizer = Recognize()
+  data = recogniser.recongize_file([path_to_the_input_file])
+  print(data)
+  ```
