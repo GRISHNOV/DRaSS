@@ -22,6 +22,8 @@ if __name__ == "__main__":
 
         storage_name = input() # Будем запрашивать повторный ввод до тех пор, пока не получим свободное имя
 
+        if storage_name == "exit":
+            exit(0)
         if os.path.isfile("./db/" + storage_name + ".drass"):
             print("Хранилище с заданным именем уже существует, попробуйте использовать другое имя.")
         else:

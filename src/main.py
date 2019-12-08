@@ -21,7 +21,11 @@ if __name__ == "__main__":
             input()
             result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
         elif user_input_command == "connect":
-            pass
+            ascii_interface.clr_terminal()
+            os.system("./content_master.py")
+            print("Нажмите любую клавишу для возвращения в основное меню")
+            input()
+            result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
         elif user_input_command == "exit":
             ascii_interface.clr_terminal()
             exit(0)
