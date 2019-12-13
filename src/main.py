@@ -6,13 +6,12 @@ import ascii_interface
 
 
 if __name__ == "__main__":
-
     result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
     while(True):
         ascii_interface.clr_terminal()
-        ascii_interface.welcom()
-        ascii_interface.main_welcom(result)
-        
+        ascii_interface.welcome()
+        ascii_interface.main_menu(result)
+
         user_input_command = input()
         if user_input_command == "create":
             ascii_interface.clr_terminal()
@@ -31,7 +30,5 @@ if __name__ == "__main__":
             exit(0)
         else:
             result = "НЕКОРРЕКТНАЯ КОМАНДА"
-
-    
 
     ascii_interface.clr_terminal()

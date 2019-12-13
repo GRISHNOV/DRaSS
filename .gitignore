@@ -1,3 +1,4 @@
 # Environment of project
 env/
 .vscode/
+*.code-workspace

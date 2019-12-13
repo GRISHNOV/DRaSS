@@ -19,3 +19,7 @@ make start
 - ```info```
 
 Created by [Denis Stasyev](https://github.com/denisstasyev), [Ilya Grishnov](https://github.com/GRISHNOV), [Mikhail Pakhomov](https://github.com/mikhan333)
+
+#### Setup ####
+
+To run this application you need to setup: pyAesCrypt, xterm. 
