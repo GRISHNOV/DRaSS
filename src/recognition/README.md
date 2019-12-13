@@ -2,7 +2,7 @@
 
 *Easy start:*
 - ```python3 recognize_passport.py [infile]``` - recognize passport data
-- ```python3 recognize_passport.py -h``` - show help
+- ```python3 recognize_passport.py -h``` - show help message
 - ```python3 recognize_passport.py -t``` - provide testing
 
 *Call function from python:*
