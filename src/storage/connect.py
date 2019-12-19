@@ -4,7 +4,7 @@ import socket
 import time
 
 from terminal_interface.menu import clear_terminal
-from terminal_interface.heros import print_man
+from terminal_interface.heroes import print_man
 
 import storage.crypto
 
