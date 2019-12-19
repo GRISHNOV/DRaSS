@@ -10,6 +10,7 @@ install:
 	python3 -m venv env
 
 start:
+	cd src && python3 run.py
 
 end:
 
