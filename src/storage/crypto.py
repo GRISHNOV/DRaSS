@@ -1,26 +1,28 @@
-#!/usr/bin/env python3
+# TODO
 
 import hashlib
 import binascii
 import time
-import pyAesCrypt # github.com/marcobellaccini/pyAesCrypt -> download repository and run setup.py install
+
+import pyAesCrypt
 import io
 
 
-def get_sha256( data:str , once_iteration:bool ) -> str: # Многоитерационный SHA256
+def get_sha256(data: str, once_iteration: bool) -> str:  # Многоитерационный SHA256
 
-    if once_iteration: # Флаг запроса только одной итерации хеширования
+    if once_iteration:  # Флаг запроса только одной итерации хеширования
 
         hash = hashlib.sha256(data.encode()).hexdigest()
         return hash
 
     else:
 
-        ITERATION_NUMBER = 10**6 # Длина цепочки хэшей. Миллион итераций обеспечивают должную задержку
-        
+        # Длина цепочки хэшей. Миллион итераций обеспечивают должную задержку
+        ITERATION_NUMBER = 10**6
+
         hash = hashlib.sha256(data.encode()).hexdigest()
         counter = 1
-        
+
         while (counter < ITERATION_NUMBER):
             hash = hashlib.sha256(hash.encode()).hexdigest()
             counter = counter + 1
@@ -28,23 +30,26 @@ def get_sha256( data:str , once_iteration:bool ) -> str: # Многоитера�
         return hash
 
 
-def get_crc32 ( data:str ) -> str: # Контрольная сумма CRC32
+def get_crc32(data: str) -> str:  # Контрольная сумма CRC32
 
     checksum = binascii.crc32(data.encode())
-    
+
     return checksum
 
 
-def get_XOR_cipher ( data:str, gamma:str ) -> str: # Потоковый шифр гаммирования для одинаковых по длине строк
+# Потоковый шифр гаммирования для одинаковых по длине строк
+def get_XOR_cipher(data: str, gamma: str) -> str:
 
-    result = bytes([i^j for i,j in zip(data.encode(),gamma.encode())]).decode() # gamma является значением ключа
+    # gamma является значением ключа
+    result = bytes([i ^ j for i, j in zip(
+        data.encode(), gamma.encode())]).decode()
 
     return result
 
 
-def get_AES256_encrypt( data:str , password:str ) -> bytes: # Шифрование AES256 
+def get_AES256_encrypt(data: str, password: str) -> bytes:  # Шифрование AES256
 
-    BUFFER_SIZE = 64 * 1024 # Размер буфера
+    BUFFER_SIZE = 64 * 1024  # Размер буфера
 
     # Битовый набор данных для шифрования (открытый текст)
     pbdata = data.encode() + b" \x00\x01"
@@ -62,9 +67,9 @@ def get_AES256_encrypt( data:str , password:str ) -> bytes: # Шифровани
     return fCiph.getvalue()
 
 
-def get_AES256_decrypt( data:str , password:str ) -> str: # Расшифрование AES256
+def get_AES256_decrypt(data: str, password: str) -> str:  # Расшифрование AES256
 
-    BUFFER_SIZE = 64 * 1024 # Размер буфера
+    BUFFER_SIZE = 64 * 1024  # Размер буфера
 
     # Инициализация битового потока для шифротекста
     fCiph = io.BytesIO(data)
@@ -80,7 +85,7 @@ def get_AES256_decrypt( data:str , password:str ) -> str: # Расшифрова
 
     # Печать расшифрованных данных
     #print("Decrypted data:\n" + str(fDec.getvalue()))
-    
+
     return str(fDec.getvalue())
 
 
