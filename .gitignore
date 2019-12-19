@@ -1,4 +1,10 @@
 # Environment of project
 env
+
+# Python
+.pytest_cache
+__pycache__
+
+# IDEs
 .vscode
-*.code-workspace
+# *.code-workspace
