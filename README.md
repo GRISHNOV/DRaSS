@@ -1,25 +1,54 @@
-# DRaSS 
-## Document recognition and storage system for tablets on the Linux x86 platform
+# DRaSS
 
-#### This open-source project was created as part of the course "Information Security" at MIPT (4th year)
+## About
+Document Recognition and Storage System for tablets on the Linux x86 platform
 
-*Easy start:*
+## Quick start
+
+Setup:
+
 ```
 make install
-source ./env/bin/activate  # To exit from virtualenv user "deactivate"
+source ./env/bin/activate
 pip3 install -r requirements.txt
+deactivate
+```
+
+Run:
+
+```
+source ./env/bin/activate
 make start
 ```
 
-*Commands: (with ```make```)*
-- ```install```
-- ```start```
-- ```end```
-- ```clean```
-- ```info```
+> To exit from virtualenv use `deactivate`
 
-Created by [Denis Stasyev](https://github.com/denisstasyev), [Ilya Grishnov](https://github.com/GRISHNOV), [Mikhail Pakhomov](https://github.com/mikhan333)
+## Available commands
 
-#### Setup ####
+### `make`
 
-To run this application you need to setup: pyAesCrypt, xterm. 
+Installs all necessary packages.
+
+### `make install`
+
+Installs all necessary packages.
+
+### `make start`
+
+Runs the application in the background mode.
+
+### `make end`
+
+In progress...
+
+### `make clean`
+
+Deletes all installed packages.
+
+### `make info`
+
+Shows current packages.
+
+## Creators
+
+This project was created by [Denis Stasyev](https://github.com/denisstasyev), [Ilya Grishnov](https://github.com/GRISHNOV), [Mikhail Pakhomov](https://github.com/mikhan333)
