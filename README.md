@@ -27,11 +27,11 @@ make start
 
 ### `make`
 
-Installs all necessary packages.
+Installs all necessary dependencies.
 
 ### `make install`
 
-Installs all necessary packages.
+Installs all necessary dependencies.
 
 ### `make start`
 
@@ -44,6 +44,10 @@ In progress...
 ### `make clean`
 
 Deletes all installed packages.
+
+### `make uninstall`
+
+Deletes all installed dependencies.
 
 ### `make info`
 

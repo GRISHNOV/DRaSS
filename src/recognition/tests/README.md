@@ -1,10 +1,13 @@
-## Tests for recognize_passsport.py
+# Tests for recognize_passsport.py
 
-*Redults of tests:*
+## Results
+
+Results of tests:
+
 - [passport_test0.jpg]: (ERROR in 'surname')
     ```
-        expected: 'БЕЛЯНЧЕВА'; 
-        received: 'БЕЛБНЧЕВА'.
+    expected: 'БЕЛЯНЧЕВА'; 
+    received: 'БЕЛБНЧЕВА'.
     ```
 - [passport_test1.jpg] (ERROR in 'name')
     ```
