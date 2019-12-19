@@ -7,9 +7,6 @@ from passporteye import read_mrz
 from collections import OrderedDict
 
 
-# TODO: fix readme
-
-
 class Recognize:
 
     def __init__(self):
