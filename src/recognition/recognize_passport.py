@@ -8,6 +8,17 @@ from collections import OrderedDict
 
 
 class Recognize:
+    map_field_latin_to_cyrillic = OrderedDict({
+        'surname': 'Фамилия',
+        'name': 'Имя',
+        'patronymic': 'Отчество',
+        'sex': 'Пол',
+        'birth_day': 'Дата рождения',
+        'extradition_day': 'Дата выдачи',
+        'passport_number': 'Номер паспорта',
+        'passport_series': 'Серия паспорта',
+        'unit_code': 'Код подразделения',
+    })
 
     def __init__(self):
         self._map_latin_to_cyrillic = {
@@ -29,8 +40,23 @@ class Recognize:
         }
         self._max_year_20th = 50
 
+    def recognize_file_tr(self, path_to_file):
+        correct_data = self.recongize_file(path_to_file)
+
+        correct_data_russia = OrderedDict()
+        if correct_data is None:
+            return correct_data_russia
+        
+        for field, value in self.map_field_latin_to_cyrillic.items():
+            if field in correct_data:
+                correct_data_russia[value] = correct_data[field]
+        return correct_data_russia
+
     def recongize_file(self, path_to_file):
-        fd = open(path_to_file, 'rb')
+        try:
+            fd = open(path_to_file, 'rb')
+        except FileNotFoundError:
+            return None
         return self.recognize_fd(fd)
 
     def recognize_fd(self, data):
