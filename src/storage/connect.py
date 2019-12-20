@@ -60,7 +60,7 @@ def get_access_selected_storage(path, storage_name):
         if error:
             print("Ошибка. Повторите ввод\n")
         print("Хранилище: ", storage_name)
-        print("Введите пароль от хранилища:")
+        print("Введите пароль (UK) от хранилища:")
         UK_input = input()
         if UK_input == "exit":
             return "exit"

@@ -12,6 +12,11 @@ if __name__ == "__main__":
     MK = "exit"
     storage_name = ""
 
+    MK = "BFiEd"
+    # UK = "X8KwD"
+    storage_name = "test"
+    # image_source = src/recognition/tests/passport_test0.jpg
+
     while(True):
         clear_terminal()
         print_welcome()

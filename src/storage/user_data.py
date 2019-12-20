@@ -1,6 +1,5 @@
 import sqlite3
 import json
-
 import time
 
 import storage.crypto
@@ -40,8 +39,10 @@ def get_user_data(MK, storage_name, path="db"):
     connection.close()
 
     for document in user_data:
+        # print(document[0])
+        doc = document[0]
         print(storage.crypto.get_AES256_decrypt(
-            str(document)[1:-2], MK))  # TODO
+            doc, MK))  # str(document)[1:-2]
     # storage.crypto.get_AES256_decrypt(document, MK)
     # storage.crypto.get_AES256_decrypt(user_data, MK)
     # for document in json.loads(storage.crypto.get_AES256_decrypt(user_data, MK)):
