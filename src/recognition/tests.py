@@ -1,4 +1,4 @@
-from .recognize_passport import Recognize
+from recognize_passport import Recognize
 import pytest
 
 
