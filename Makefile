@@ -20,8 +20,7 @@ clean:
 	rm -rf ./env/ ./.vscode/
 
 uninstall: clean
-	sudo apt remove tesseract-ocr
-	sudo apt remove xterm 
+	sudo apt remove tesseract-ocr xterm
 
 info:
 	pip freeze
