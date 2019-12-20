@@ -1,7 +1,6 @@
 import os
 import sqlite3
 import socket
-import time
 
 import storage.crypto
 from keyboard_entropy.interface import interface_main
@@ -58,10 +57,10 @@ def create_selected_storage(path, storage_name):
     text_comment                    - log information
     """
 
-    connection = sqlite3.connect(path + "/" + storage_name +
-                                 ("" if storage_name.endswith(
-                                     ".drass") else ".drass")
-                                 )
+    connection = sqlite3.connect(
+        path + "/" + storage_name +
+        ("" if storage_name.endswith(".drass") else ".drass")
+    )
     cursor = connection.cursor()
 
     cursor.execute(
@@ -72,6 +71,13 @@ def create_selected_storage(path, storage_name):
             MK_encypted text,
             MK_CRC text, 
             text_comment text
+        )
+        '''
+    )
+    cursor.execute(
+        '''
+        CREATE TABLE user_data(
+            document text
         )
         '''
     )

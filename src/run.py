@@ -2,8 +2,19 @@ from terminal_interface.menu import clear_terminal, print_welcome, print_menu
 from storage.connect import connect_storage
 from storage.create import create_storage
 
+from storage.user_data import load_user_data, get_user_data
+
 if __name__ == "__main__":
     result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
+
+    MK = "exit"
+    storage_name = ""
+
+    # TODO
+    # MK = "xzo7F"
+    # storage_name = "test1.drass"
+    MK = "24b9M"
+    storage_name = "ttt"
     while(True):
         clear_terminal()
         print_welcome()
@@ -16,8 +27,19 @@ if __name__ == "__main__":
             result = "УСПЕШНОЕ СОЗДАНИЕ ХРАНИЛИЩА"
         elif user_input_command == "connect":
             clear_terminal()
-            connect_storage()
-            result = "УСПЕШНОЕ ПОДКЛЮЧЕНИЕ К ХРАНИЛИЩУ"
+            MK, storage_name = connect_storage()
+            if MK == "exit":
+                result = "НЕУСПЕШНОЕ ПОДКЛЮЧЕНИЕ К ХРАНИЛИЩУ"
+            else:
+                result = "УСПЕШНОЕ ПОДКЛЮЧЕНИЕ К ХРАНИЛИЩУ"
+        elif user_input_command == "load":
+            clear_terminal()
+            load_user_data(MK, storage_name, [{"testing": True}])  # TODO
+            result = "УСПЕШНАЯ ЗАГРУЗКА ДОКУМЕНТА"
+        elif user_input_command == "get":
+            clear_terminal()
+            result = str(get_user_data(MK, storage_name))
+            # result = "УСПЕШНОЕ ПОЛУЧЕНИЕ ДОКУМЕНТА"
         elif user_input_command == "exit":
             clear_terminal()
             exit(0)

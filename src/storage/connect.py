@@ -63,7 +63,7 @@ def get_access_selected_storage(path, storage_name):
         print("Введите пароль от хранилища:")
         UK_input = input()
         if UK_input == "exit":
-            return
+            return "exit"
         UK_hash = storage.crypto.get_sha256(
             storage.crypto.get_sha256(UK_input, False), True)
 
@@ -92,6 +92,8 @@ def get_access_selected_storage(path, storage_name):
     connection.commit()
     connection.close()
 
+    return MK
+
 
 def connect_storage(path="db"):
     # Prepare directory to create database
@@ -101,17 +103,18 @@ def connect_storage(path="db"):
     print("0. Список доступных хранилищ:")
     if not print_available_storages(path):
         time.sleep(1)
-        return
+        return "exit"
     print("------------------------------")
 
     print("1. Введите имя хранилища, к которому Вы хотите подключиться (или exit чтобы выйти):")
     storage_name = get_selected_storage(path)
     if storage_name == "exit":
-        return
+        return "exit"
     print("------------------------------")
 
     print("2. Идёт установка соединения с хранилищем...")
-    get_access_selected_storage("db", storage_name)
+    MK = get_access_selected_storage("db", storage_name)
+    return MK, storage_name
 
 
 if __name__ == "__main__":
