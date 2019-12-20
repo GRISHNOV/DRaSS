@@ -62,7 +62,7 @@ def create_selected_storage(path, storage_name):  # TODO
     sock.bind(('', 2020))
     sock.listen(1)
 
-    os.system("./src/interface_keyboard_entropy.py")
+    os.system("./src/keyboard_entropy/interface.py")
 
     conn, addr = sock.accept()
 
@@ -90,7 +90,7 @@ def create_selected_storage(path, storage_name):  # TODO
     sock.bind(('', 2020))
     sock.listen(1)
 
-    os.system("./src/interface_keyboard_entropy.py")
+    os.system("./src/keyboard_entropy/interface.py")
 
     conn, addr = sock.accept()
 

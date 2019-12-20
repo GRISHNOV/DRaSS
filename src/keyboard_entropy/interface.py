@@ -8,12 +8,12 @@ if __name__ == "__main__":
     print("Нажмите несколько случайных клавиш на клавиатуре, это нужно для создания ключей.")
     print("Продолжайте ввод, пока не исчезнет дополнительное окно терминала...")
 
-    # Сервер для приёма данных из core_keyboard_entropy.py
+    # Сервер для приёма данных из keyboard_entropy/core.py
 
     sock = socket.socket()
     sock.bind(('', 2019))
     sock.listen(1)
-    os.system("xterm -e './src/core_keyboard_entropy.py'")
+    os.system("xterm -e './src/keyboard_entropy/core.py'")
     conn, addr = sock.accept()
 
     #print (' (debug info) connected:', addr)

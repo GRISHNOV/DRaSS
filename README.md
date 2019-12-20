@@ -1,6 +1,5 @@
 # DRaSS
 
-## About
 Document Recognition and Storage System for tablets on the Linux x86 platform
 
 ## Quick start
