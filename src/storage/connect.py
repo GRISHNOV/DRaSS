@@ -40,47 +40,53 @@ def get_selected_storage(path="db"):
             print("Хранилища с введённым именем не существует, попробуйте ещё раз")
 
 
-def get_access_selected_storage(path, storage_name):  # TODO
+def get_access_selected_storage(path, storage_name):
     connection = sqlite3.connect(path + "/" + storage_name)
     cursor = connection.cursor()
 
     print("Соединение с хранилищем установлено!")
     # time.sleep(2)
 
-    cursor.execute('SELECT * FROM key_data ')
+    cursor.execute('SELECT * FROM key_data')
     rows = cursor.fetchall()
 
     clear_terminal()
-    while(True):
+
+    error = False
+    cycle = True
+    while(cycle):
 
         print_man()
+        if error:
+            print("Ошибка. Повторите ввод\n")
         print("Хранилище: ", storage_name)
         print("Введите пароль от хранилища:")
         UK_input = input()
         if UK_input == "exit":
-            exit(0)
+            return
         UK_hash = storage.crypto.get_sha256(
             storage.crypto.get_sha256(UK_input, False), True)
 
         if UK_hash == rows[0][1]:
+            error = False
             clear_terminal()
-            print("Принято!")
             print_man()
-            break
-
+            print("Принято!\n")
+            cycle = False
         else:
+            error = True
             clear_terminal()
-            print("Ошибка. Повторите ввод")
 
     UK_gamma = storage.crypto.get_sha256(UK_input, False)
     MK = storage.crypto.get_XOR_cipher(rows[0][2], UK_gamma)
 
     if str(storage.crypto.get_crc32(MK)) == rows[0][3]:
-        print()
-        # print("MK CRC correct")
+        print("Контрольная сумма CRC MK - верна!")
+        time.sleep(2)
     else:
-        print("MK CRC error")
+        print("Контрольная сумма CRC MK - неверна!")
         print("Гаммирование MK завершилось ошибкой. Хранилище повреждено...")
+        time.sleep(2)
         exit(0)
 
     connection.commit()
@@ -106,7 +112,6 @@ def connect_storage(path="db"):
 
     print("2. Идёт установка соединения с хранилищем...")
     get_access_selected_storage("db", storage_name)
-    # print("------------------------------")
 
 
 if __name__ == "__main__":
