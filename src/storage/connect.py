@@ -15,8 +15,14 @@ def get_available_storages(path="db"):
 
 
 def print_available_storages(path="db"):
-    for file in get_available_storages(path):
-        print(file)
+    files = get_available_storages(path)
+    if len(files):
+        for file in files:
+            print(file)
+        return True
+    else:
+        print("Нет доступных хранилищ")
+        return False
 
 
 def get_selected_storage(path="db"):
@@ -44,21 +50,13 @@ def get_access_selected_storage(path, storage_name):  # TODO
     cursor.execute('SELECT * FROM key_data ')
     rows = cursor.fetchall()
 
-    ################################
-    # rows[0][0] ==> user_db_name  #
-    # rows[0][1] ==> UK_hash       #
-    # rows[0][2] ==> MK_encypted   #
-    # rows[0][3] ==> MK_CRC        #
-    # rows[0][4] ==> text_comment  #
-    ################################
-
     clear_terminal()
     while(True):
 
         print_man()
         print("Хранилище: ", storage_name)
         print("Введите пароль от хранилища:")
-        UK_input = input()  # pUoSi
+        UK_input = input()
         if UK_input == "exit":
             exit(0)
         UK_hash = storage.crypto.get_sha256(
@@ -66,13 +64,13 @@ def get_access_selected_storage(path, storage_name):  # TODO
 
         if UK_hash == rows[0][1]:
             clear_terminal()
-            print("\t\t\t\t\t\tПринято!")
+            print("Принято!")
             print_man()
             break
 
         else:
             clear_terminal()
-            print("\t\t\t\t\t\t\tОшибка. Повторите ввод")
+            print("Ошибка. Повторите ввод")
 
     UK_gamma = storage.crypto.get_sha256(UK_input, False)
     MK = storage.crypto.get_XOR_cipher(rows[0][2], UK_gamma)
@@ -95,7 +93,9 @@ def connect_storage(path="db"):
         os.mkdir(path)
 
     print("0. Список доступных хранилищ:")
-    print_available_storages(path)
+    if not print_available_storages(path):
+        time.sleep(1)
+        return
     print("------------------------------")
 
     print("1. Введите имя хранилища, к которому Вы хотите подключиться (или exit чтобы выйти):")

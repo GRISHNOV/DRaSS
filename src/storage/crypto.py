@@ -1,8 +1,5 @@
-# TODO
-
 import hashlib
 import binascii
-import time
 
 import pyAesCrypt
 import io
@@ -87,10 +84,3 @@ def get_AES256_decrypt(data: str, password: str) -> str:  # Расшифрова
     #print("Decrypted data:\n" + str(fDec.getvalue()))
 
     return str(fDec.getvalue())
-
-
-if __name__ == "__main__":
-
-    print("\n---------- START module crypto ----------\n\n")
-    pass
-    print("\n\n---------- END module crypto ----------\n")

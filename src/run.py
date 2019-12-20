@@ -13,9 +13,7 @@ if __name__ == "__main__":
         if user_input_command == "create":
             clear_terminal()
             create_storage()
-            # print("Нажмите любую клавишу для возвращения в основное меню")
-            # input()
-            result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
+            result = "УСПЕШНО СОЗДАНО ХРАНИЛИЩЕ"
         elif user_input_command == "connect":
             clear_terminal()
             connect_storage()
