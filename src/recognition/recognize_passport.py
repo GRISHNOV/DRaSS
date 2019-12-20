@@ -15,8 +15,8 @@ class Recognize:
         'sex': 'Пол',
         'birth_day': 'Дата рождения',
         'extradition_day': 'Дата выдачи',
-        'passport_number': 'Номер паспорта',
         'passport_series': 'Серия паспорта',
+        'passport_number': 'Номер паспорта',
         'unit_code': 'Код подразделения',
     })
 
