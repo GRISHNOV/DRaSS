@@ -13,11 +13,11 @@ if __name__ == "__main__":
         if user_input_command == "create":
             clear_terminal()
             create_storage()
-            result = "УСПЕШНО СОЗДАНО ХРАНИЛИЩЕ"
+            result = "УСПЕШНОЕ СОЗДАНИЕ ХРАНИЛИЩА"
         elif user_input_command == "connect":
             clear_terminal()
             connect_storage()
-            result = "УСПЕШНО ПОДКЛЮЧИЛИСЬ К ХРАНИЛИЩУ"
+            result = "УСПЕШНОЕ ПОДКЛЮЧЕНИЕ К ХРАНИЛИЩУ"
         elif user_input_command == "exit":
             clear_terminal()
             exit(0)
