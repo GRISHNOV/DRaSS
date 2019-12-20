@@ -1,8 +1,10 @@
 import os
 import sqlite3
 import socket
+import time
 
 import storage.crypto
+from keyboard_entropy.interface import interface_main
 
 
 def check_selected_storage(path="db"):
@@ -10,7 +12,7 @@ def check_selected_storage(path="db"):
         storage_name = input()
 
         if storage_name == "exit":
-            return "exit"
+            return None
         if os.path.isfile(path + "/" + storage_name) or os.path.isfile(path + "/" + storage_name + ".drass"):
             print(
                 "Хранилище с заданным именем уже существует, попробуйте использовать другое имя")
@@ -18,26 +20,61 @@ def check_selected_storage(path="db"):
             return storage_name
 
 
-def create_selected_storage(path, storage_name):  # TODO
-    connection = sqlite3.connect("./db/" + storage_name + ".drass")
+def get_keyboard_entropy_data(wait=False):
+    """
+    Server to get client data from keyboard_entropy/interface.py
+    """
+
+    sock = socket.socket()
+    sock.bind(('', 2020))
+    sock.listen(1)
+
+    interface_main(wait)  # Client part
+
+    conn, addr = sock.accept()
+
+    # print('(debug info) connected:', addr)
+
+    data_from_client = []
+
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        # print(data.decode())
+        data_from_client.append(data.decode())
+
+    conn.close()
+    return data_from_client
+
+
+def create_selected_storage(path, storage_name):
+    """
+    Create database "key_data":
+    user_db_name                    - storage name
+    UK_hash                         - value of the (10**6 + 1) iteration of the SHA256 from UK (User Key)
+    MK_encypted = MK xor UK_gamma   - UK_gamma is (10**6) iteration of the SHA256 from UK
+    MK_CRC                          - CRC32 value from MK
+    text_comment                    - log information
+    """
+
+    connection = sqlite3.connect(path + "/" + storage_name +
+                                 ("" if storage_name.endswith(
+                                     ".drass") else ".drass")
+                                 )
     cursor = connection.cursor()
 
-    #   Ниже создадим таблицу key_data для хранения ключевой информации (хэши и прочее)
-    cursor.execute("""CREATE TABLE key_data     
-                    (user_db_name text, 
-                    UK_hash text, 
-                    MK_encypted text,
-                    MK_CRC text, 
-                    text_comment text)
-                """)
-
-    ###########################################################################################
-    # user_db_name -- имя хранилища, заданное пользователем при его создании                  #
-    # UK_hash -- значение (10**6 + 1)-ой итерации sha256 от UK (User Key)                     #
-    # MK_encypted = MK xor UK_gamma, UK_gamma равен (10**6)-ой итерации sha256 от UK          #
-    # MK_CRC -- значение CRC32 от MK                                                          #
-    # text_comment -- отладочная информация                                                   #
-    ###########################################################################################
+    cursor.execute(
+        '''
+        CREATE TABLE key_data(
+            user_db_name text, 
+            UK_hash text, 
+            MK_encypted text,
+            MK_CRC text, 
+            text_comment text
+        )
+        '''
+    )
 
     UK = ""
     MK = ""
@@ -46,81 +83,44 @@ def create_selected_storage(path, storage_name):  # TODO
     MK_encypted = ""
     MK_CRC = ""
 
-    #entities = (storage_name, '-\\-', '-\\-', '-\\-', '-\\-')
-    #cursor.execute('''INSERT INTO key_data(user_db_name, UK_hash, MK_encypted, MK_CRC, text_comment) VALUES(?, ?, ?, ?, ?)''', entities)
-
-    #cursor.execute('SELECT * FROM key_data ')
-    #rows = cursor.fetchall()
-    # for row in rows:
-    # print(row)
-
-    # os.chdir("./../")
-
-    # Работа сервера для получение данных от клиентского модуля interface_keyboard_entropy.py
-    # Диалог между модулями разыгрывается для генерации значения MK
-    sock = socket.socket()
-    sock.bind(('', 2020))
-    sock.listen(1)
-
-    os.system("./src/keyboard_entropy/interface.py")
-
-    conn, addr = sock.accept()
-
-    print('(debug info) connected:', addr)
-
-    data_from_client = []
-
-    while True:
-        data = conn.recv(1024)
-        if not data:
-            break
-        print(data.decode())
-        data_from_client.append(data.decode())
-
-    conn.close()
-
+    data_from_client = get_keyboard_entropy_data()
     for i in data_from_client:
         MK += i
+    print("\nMK: ", MK)
 
-    print("\nMK:", MK)
-
-    # Работа сервера для получение данных от клиентского модуля interface_keyboard_entropy.py
-    # Диалог между модулями разыгрывается для генерации значения UK
-    sock = socket.socket()
-    sock.bind(('', 2020))
-    sock.listen(1)
-
-    os.system("./src/keyboard_entropy/interface.py")
-
-    conn, addr = sock.accept()
-
-    print('(debug info) connected:', addr)
-
-    data_from_client = []
-
-    while True:
-        data = conn.recv(1024)
-        if not data:
-            break
-        print(data.decode())
-        data_from_client.append(data.decode())
-
-    conn.close()
-
+    data_from_client = get_keyboard_entropy_data()
     for i in data_from_client:
         UK += i
+    print("\nUK: ", UK)
 
-    print("\nUK:", UK)
+    print("\nСохраните MK и UK для доступа к хранилищу.")
+    print("Нажмите любую клавишу чтобы продолжить...")
+    input()
 
     UK_gamma = storage.crypto.get_sha256(UK, False)
     UK_hash = storage.crypto.get_sha256(UK_gamma, True)
     MK_encypted = storage.crypto.get_XOR_cipher(MK, UK_gamma)
     MK_CRC = storage.crypto.get_crc32(MK)
 
-    entities = (storage_name, UK_hash, MK_encypted,
-                MK_CRC, 'storage_created_successfully')
+    entities = (
+        storage_name,
+        UK_hash,
+        MK_encypted,
+        MK_CRC,
+        'storage_created_successfully'
+    )
     cursor.execute(
-        '''INSERT INTO key_data(user_db_name, UK_hash, MK_encypted, MK_CRC, text_comment) VALUES(?, ?, ?, ?, ?)''', entities)
+        '''
+        INSERT INTO key_data(
+            user_db_name, 
+            UK_hash, 
+            MK_encypted, 
+            MK_CRC, 
+            text_comment
+        ) VALUES(?, ?, ?, ?, ?)
+        ''',
+        entities
+    )
 
     connection.commit()
     connection.close()
@@ -133,13 +133,12 @@ def create_storage(path="db"):
 
     print("1. Введите желаемое имя для Вашего хранилища:")
     storage_name = check_selected_storage(path)
-    if storage_name == "exit":
+    if not storage_name:
         return
     print("------------------------------")
 
     print("2. Идёт создание хранилища...")
     create_selected_storage("db", storage_name)
-    # print("------------------------------")
 
 
 if __name__ == "__main__":

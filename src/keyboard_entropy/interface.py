@@ -2,12 +2,12 @@ import os
 import socket
 
 
-def interface_main():
+def interface_main(wait=False):
     """
     Server to recieve data from keyboard_entropy/core.py
     """
 
-    print("Нажмите несколько случайных клавиш на клавиатуре, это нужно для создания ключей.")
+    print("\nНажмите несколько случайных клавиш на клавиатуре, это нужно для создания ключей.")
     print("Продолжайте ввод, пока не исчезнет дополнительное окно терминала...")
 
     sock = socket.socket()
@@ -27,7 +27,7 @@ def interface_main():
         data = conn.recv(1024)
         if not data:
             break
-        print(f"\nПолучена энтропия равная {data.decode()}.")
+        # print(f"\nПолучена энтропия равная {data.decode()}.")
         entropy_parametr.append(data.decode())
 
     conn.close()
@@ -66,8 +66,9 @@ def interface_main():
 
     # print("KEY:", key)
 
-    print("\nНажмите любую клавишу чтобы продолжить...")
-    input()
+    if wait:
+        print("\nНажмите любую клавишу чтобы продолжить...")
+        input()
 
     data_for_server = ""
     for i in key:
