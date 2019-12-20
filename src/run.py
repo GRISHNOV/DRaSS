@@ -3,6 +3,8 @@ from storage.connect import connect_storage
 from storage.create import create_storage
 
 from storage.user_data import load_user_data, get_user_data
+from storage.input_data import EnterData
+
 
 if __name__ == "__main__":
     result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
@@ -10,11 +12,6 @@ if __name__ == "__main__":
     MK = "exit"
     storage_name = ""
 
-    # TODO
-    # MK = "xzo7F"
-    # storage_name = "test1.drass"
-    MK = "24b9M"
-    storage_name = "ttt"
     while(True):
         clear_terminal()
         print_welcome()
@@ -34,7 +31,8 @@ if __name__ == "__main__":
                 result = "УСПЕШНОЕ ПОДКЛЮЧЕНИЕ К ХРАНИЛИЩУ"
         elif user_input_command == "load":
             clear_terminal()
-            load_user_data(MK, storage_name, [{"testing": True}])  # TODO
+            enter_data = EnterData()
+            enter_data.input_passport(MK, storage_name)
             result = "УСПЕШНАЯ ЗАГРУЗКА ДОКУМЕНТА"
         elif user_input_command == "get":
             clear_terminal()

@@ -2,7 +2,10 @@ import os
 import time
 from recognition.recognize_passport import Recognize
 from collections import OrderedDict
+from storage.user_data import load_user_data
 
+# j34CR
+# src/recognition/tests/passport_test0.jpg
 
 class EnterData:
     def __init__(self):
@@ -19,7 +22,11 @@ class EnterData:
                 return False
         return True
 
-    def _send_to_db(self):
+    def _send_to_db(self, MK, storage_name):
+        data_string = ""
+        for key, value in self.data_passport.items():
+            data_string += key + ":" + ";" + value
+        load_user_data(MK, storage_name, data_string)
         return True
 
     def check_input_data(self):
@@ -29,7 +36,7 @@ class EnterData:
             print(f"{i}: {self.data_passport[i]}")
             result = input()
             if result in ['н', 'n']:
-                print(f"Введите корректное {i}")
+                print(f"Введите корректное {i}: ", end="")
                 self.data_passport[i] = input()
         
         print("Введите недостающие данные")
@@ -57,7 +64,11 @@ class EnterData:
             self.data_passport[field] = input()
         return
 
-    def input_passport(self):
+    def input_passport(self, MK, storage_name):
+        if MK == "exit":
+            print("Сначала подключитесь к БД (команда connect)")
+            time.sleep(2)
+            return
         print('''
 В каком формате вы хотите загрузить паспорт? (выберете цифру) \n
 {}. Распознавание данных из скана паспорта;\n
@@ -77,9 +88,10 @@ class EnterData:
         else:
             self._input_passport_from_terminal()
         
+        print("-----------------------")
         print("Загружаемые данные в БД")
         print("-----------------------")
-        for field, value in self.data_passport:
+        for field, value in self.data_passport.items():
             print(f"{field}: {value}")
         print("----------------------------")
         print("Отправить данные в БД? (д/н)")
@@ -88,9 +100,9 @@ class EnterData:
             print("Загрузка отменена")
             return
 
-        if not self._send_to_db():
+        if not self._send_to_db(MK, storage_name):
             print("Ошибка при загрузки в БД")
         else:
             print("Успешно загружено в БД")
-        time.sleep(1)
+        time.sleep(2)
         return
