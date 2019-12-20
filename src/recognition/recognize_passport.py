@@ -34,29 +34,35 @@ class Recognize:
         return self.recognize_fd(fd)
 
     def recognize_fd(self, data):
-        recogn_data = self.get_mrz(data).to_dict()
+        mrz_data = self.get_mrz(data)
+        if not mrz_data:
+            return None
+        recogn_data = mrz_data.to_dict()
 
-        name, patronymic = recogn_data['names'].split()
+        name, patronymic = [None] * 2
+        if recogn_data.get('names'):
+            name, patronymic = recogn_data.get('names').split()
+        
         correct_data = OrderedDict({
-            'type':         recogn_data['type'],
-            'country':      recogn_data['country'],
-            'nationality':  recogn_data['nationality'],
+            'type':         recogn_data.get('type'),
+            'country':      recogn_data.get('country'),
+            'nationality':  recogn_data.get('nationality'),
 
-            'surname':      self._translate_latin_to_cyrillic(recogn_data['surname']),
+            'surname':      self._translate_latin_to_cyrillic(recogn_data.get('surname')),
             'name':         self._translate_latin_to_cyrillic(name),
             'patronymic':   self._translate_latin_to_cyrillic(patronymic),
-            'sex':          self._map_sex[recogn_data['sex']],
+            'sex':          self._map_sex.get(recogn_data.get('sex')),
         })
 
-        if recogn_data['valid_date_of_birth']:
+        if recogn_data.get('valid_date_of_birth'):
             correct_data['birth_day'] = self._get_day_correct_view(
                 recogn_data['date_of_birth'])
 
-        if recogn_data['valid_number']:
+        if recogn_data.get('valid_number'):
             correct_data['passport_number'] = recogn_data['number'][3:9]
 
-        if recogn_data['valid_personal_number']:
-            if recogn_data['valid_number']:
+        if recogn_data.get('valid_personal_number'):
+            if recogn_data.get('valid_number'):
                 correct_data['passport_series'] = recogn_data['number'][0:3] + \
                     recogn_data['personal_number'][0]
             correct_data['extradition_day'] = self._get_day_correct_view(
@@ -71,6 +77,8 @@ class Recognize:
         return mrz
 
     def _translate_latin_to_cyrillic(self, word):
+        if not word:
+            return None
         for char in self._map_latin_to_cyrillic:
             word = word.replace(char, self._map_latin_to_cyrillic[char])
         return word
@@ -79,8 +87,8 @@ class Recognize:
         return \
             day_number[4:] + '.' + \
             day_number[2:4] + '.' + \
-            ('20' if int(day_number[:2]) <
-             self._max_year_20th else '19') + day_number[:2]
+            ('20' if int(day_number[:2]) < self._max_year_20th else '19') + \
+            day_number[:2]
 
 
 class ArgTestAction(argparse.Action):
