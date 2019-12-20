@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import os
 import socket
 
@@ -15,7 +13,7 @@ if __name__ == "__main__":
     sock = socket.socket()
     sock.bind(('', 2019))
     sock.listen(1)
-    os.system("xterm -e './core_keyboard_entropy.py'")
+    os.system("xterm -e './src/core_keyboard_entropy.py'")
     conn, addr = sock.accept()
 
     #print (' (debug info) connected:', addr)
