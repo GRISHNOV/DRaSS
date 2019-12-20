@@ -1,19 +1,19 @@
 import os
 import socket
 
-if __name__ == "__main__":
 
-    print("\n---------- START module interface keyboard entropy ----------\n\n")
+def interface_main():
+    """
+    Server to recieve data from keyboard_entropy/core.py
+    """
 
     print("Нажмите несколько случайных клавиш на клавиатуре, это нужно для создания ключей.")
     print("Продолжайте ввод, пока не исчезнет дополнительное окно терминала...")
 
-    # Сервер для приёма данных из keyboard_entropy/core.py
-
     sock = socket.socket()
     sock.bind(('', 2019))
     sock.listen(1)
-    os.system("xterm -e './src/keyboard_entropy/core.py'")
+    os.system("xterm -e 'python3 src/keyboard_entropy/core.py'")
     conn, addr = sock.accept()
 
     #print (' (debug info) connected:', addr)
@@ -27,21 +27,18 @@ if __name__ == "__main__":
         data = conn.recv(1024)
         if not data:
             break
-        print(data.decode())
+        print(f"\nПолучена энтропия равная {data.decode()}.")
         entropy_parametr.append(data.decode())
-
-    print("\nСпасибо!")
 
     conn.close()
 
-    print(entropy_parametr[0])
+    # print(entropy_parametr[0])
     for i in entropy_parametr[0]:
         entropy_array.append(i)
     for k in range(1, 10):
         entropy_array.append(k)
 
-    print()
-    print(entropy_array)
+    # print(entropy_array)
 
     buf = 0
     j = 0
@@ -53,9 +50,8 @@ if __name__ == "__main__":
         if (j % 3 == 0):
             keys_map_code.append(buf % 60)
             buf = 0
-    print()
-    print(keys_map_code)
-    print()
+
+    # print(keys_map_code)
 
     map = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
@@ -65,16 +61,12 @@ if __name__ == "__main__":
            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
            'Y', 'Z']
 
-    print(map)
-    print()
-
     for i in keys_map_code:
         key.append(map[i])
-    print()
 
-    print("KEY:", key)
+    # print("KEY:", key)
 
-    print("\nPress for push msg to server")
+    print("\nНажмите любую клавишу чтобы продолжить...")
     input()
 
     data_for_server = ""
@@ -86,4 +78,6 @@ if __name__ == "__main__":
     sock.send(data_for_server.encode())
     sock.close()
 
-    print("\n\n---------- END module intefrace keyboard entropy ----------\n")
+
+if __name__ == "__main__":
+    interface_main()

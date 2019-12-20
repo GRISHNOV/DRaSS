@@ -9,13 +9,13 @@ def on_press(key):
     try:
         global total_keyboard_press
         print(
-            "\nБыла нажата алфавитно-цифровая клавиша '{0}'.".format(key.char))
+            f"\nБыла нажата алфавитно-цифровая клавиша '{key.char}'.")
         total_keyboard_press += 1
         if total_keyboard_press == 21:
             abort_keyboard_listen()
 
     except AttributeError:
-        print("\nБыла нажата специальная клавиша '{0}'.".format(key))
+        print(f"\nБыла нажата специальная клавиша '{key}'.")
 
 
 def abort_keyboard_listen():
@@ -23,8 +23,9 @@ def abort_keyboard_listen():
     timestamp_end = time.time()
     elapsed_time = timestamp_end - timestamp_begin
 
-    print("\nПолучен энтропийный параметр равный {0}.\n".format(elapsed_time))
-    print("Суммарно было нажато {0} клавиш.".format(total_keyboard_press))
+    print(f"\nПолучен энтропийный параметр равный {elapsed_time}.\n")
+    print(f"Суммарно было нажато {total_keyboard_press} клавиш.")
+    time.sleep(2)
 
     str_entropy = str(elapsed_time)
 
