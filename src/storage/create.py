@@ -93,7 +93,7 @@ def create_selected_storage(path, storage_name):
         UK += i
     print("\nUK: ", UK)
 
-    print("\nСохраните MK и UK для доступа к хранилищу.")
+    print("\nСохраните UK для доступа к хранилищу.")
     print("Нажмите любую клавишу чтобы продолжить...")
     input()
 

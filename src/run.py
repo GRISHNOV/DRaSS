@@ -13,17 +13,15 @@ if __name__ == "__main__":
         if user_input_command == "create":
             clear_terminal()
             create_storage()
-            result = "УСПЕШНО СОЗДАНО ХРАНИЛИЩЕ"
+            result = "УСПЕШНОЕ СОЗДАНИЕ ХРАНИЛИЩА"
         elif user_input_command == "connect":
             clear_terminal()
             connect_storage()
-            # print("Нажмите любую клавишу для возвращения в основное меню")
-            # input()
-            result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
+            result = "УСПЕШНОЕ ПОДКЛЮЧЕНИЕ К ХРАНИЛИЩУ"
         elif user_input_command == "exit":
             clear_terminal()
             exit(0)
         else:
-            result = "НЕКОРРЕКТНАЯ КОМАНДА"
+            result = "ВВЕДЕНА НЕКОРРЕКТНАЯ КОМАНДА"
 
     clear_terminal()
