@@ -5,8 +5,6 @@ from collections import OrderedDict
 from recognition.recognize_passport import Recognize
 from storage.user_data import load_user_data
 from terminal_interface.menu import clear_terminal
-# j34CR
-# src/recognition/tests/passport_test0.jpg
 
 
 class EnterData:
@@ -26,9 +24,12 @@ class EnterData:
 
     def _send_to_db(self, MK, storage_name):
         data_string = ""
+        data_result = ""
         for key, value in self.data_passport.items():
-            data_string += key + "::" + value + ";;" 
-        load_user_data(MK, storage_name, data_string)
+            data_string += key + "::" + value + ";;"
+        for char in data_string:
+            data_result += f"{ord(char):04}"
+        load_user_data(MK, storage_name, data_result)
         return True
 
     def check_input_data(self):

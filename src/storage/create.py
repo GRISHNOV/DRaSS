@@ -92,7 +92,7 @@ def create_selected_storage(path, storage_name):
     data_from_client = get_keyboard_entropy_data()
     for i in data_from_client:
         MK += i
-    print("\nMK: ", MK)
+    # print("\nMK: ", MK)
 
     data_from_client = get_keyboard_entropy_data()
     for i in data_from_client:

@@ -18,7 +18,7 @@ def load_user_data(MK, storage_name, user_data, path="db"):
             document
         ) VALUES(?)
         ''',
-        (storage.crypto.get_AES256_encrypt(json.dumps(user_data), MK),)
+        (storage.crypto.get_AES256_encrypt(user_data, MK),)
     )
 
     connection.commit()
@@ -35,18 +35,12 @@ def get_user_data(MK, storage_name, path="db"):
     cursor.execute('SELECT document FROM user_data')
     user_data = cursor.fetchall()
 
+    decrypted_user_data = []
+    for doc in user_data:
+        decrypted_user_data.append(
+            storage.crypto.get_AES256_decrypt(doc[0], MK))
+
     connection.commit()
     connection.close()
 
-    for document in user_data:
-        # print(document[0])
-        doc = document[0]
-        print(storage.crypto.get_AES256_decrypt(
-            doc, MK))  # str(document)[1:-2]
-    # storage.crypto.get_AES256_decrypt(document, MK)
-    # storage.crypto.get_AES256_decrypt(user_data, MK)
-    # for document in json.loads(storage.crypto.get_AES256_decrypt(user_data, MK)):
-
-    time.sleep(10)
-
-    return user_data
+    return decrypted_user_data

@@ -55,3 +55,13 @@ Shows current packages.
 ## Creators
 
 This project was created by [Denis Stasyev](https://github.com/denisstasyev), [Ilya Grishnov](https://github.com/GRISHNOV), [Mikhail Pakhomov](https://github.com/mikhan333)
+
+## Testing
+
+Load custom images of passports:
+
+```src/recognition/tests/passport_test0.jpg```
+
+Data for test.drass:
+
+```UK:  mgjo2```

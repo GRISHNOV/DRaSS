@@ -2,20 +2,14 @@ from terminal_interface.menu import clear_terminal, print_welcome, print_menu
 from storage.connect import connect_storage
 from storage.create import create_storage
 
-from storage.user_data import load_user_data, get_user_data
 from storage.input_data import EnterData
-
+from storage.out_data import output_data
 
 if __name__ == "__main__":
     result = "ОЖИДАЕТСЯ ВВОД КОМАНДЫ"
 
     MK = "exit"
     storage_name = ""
-
-    MK = "BFiEd"
-    # UK = "X8KwD"
-    storage_name = "test"
-    # image_source = src/recognition/tests/passport_test0.jpg
 
     while(True):
         clear_terminal()
@@ -41,8 +35,8 @@ if __name__ == "__main__":
             result = "УСПЕШНАЯ ЗАГРУЗКА ДОКУМЕНТА"
         elif user_input_command == "get":
             clear_terminal()
-            result = str(get_user_data(MK, storage_name))
-            # result = "УСПЕШНОЕ ПОЛУЧЕНИЕ ДОКУМЕНТА"
+            output_data(MK, storage_name)
+            result = "УСПЕШНОЕ ПОЛУЧЕНИЕ ДОКУМЕНТА"
         elif user_input_command == "exit":
             clear_terminal()
             exit(0)

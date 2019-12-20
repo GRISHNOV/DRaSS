@@ -50,7 +50,7 @@ def get_AES256_encrypt(data: str, password: str) -> bytes:  # Шифровани
 
     # Битовый набор данных для шифрования (открытый текст)
     pbdata = data.encode() + b" \x00\x01"
-    print(pbdata)
+    # print(pbdata)
 
     # Входной битовый поток для открытого текста
     fIn = io.BytesIO(pbdata)
@@ -83,4 +83,4 @@ def get_AES256_decrypt(data: str, password: str) -> str:  # Расшифрова
     # Печать расшифрованных данных
     #print("Decrypted data:\n" + str(fDec.getvalue()))
 
-    return str(fDec.getvalue())
+    return str(fDec.getvalue())[2:-10]
