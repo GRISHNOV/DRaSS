@@ -41,7 +41,7 @@ class EnterData:
             result = input()
             if result in ['н', 'нет', 'n', 'no']:
                 print(f"Введите корректное поле \"{field}\": ", end="")
-                self.data_passport[i] = input()
+                self.data_passport[field] = input()
 
         result = True
         for field in Recognize.map_field_latin_to_cyrillic.values():
